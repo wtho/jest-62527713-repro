@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "projects": {
+    "so-repro": {
+      "projectType": "application",
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "apps/so-repro",
+      "sourceRoot": "apps/so-repro/src",
+      "prefix": "so-repro",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/so-repro",
+            "index": "apps/so-repro/src/index.html",
+            "main": "apps/so-repro/src/main.ts",
+            "polyfills": "apps/so-repro/src/polyfills.ts",
+            "tsConfig": "apps/so-repro/tsconfig.app.json",
+            "aot": false,
+            "assets": [
+              "apps/so-repro/src/favicon.ico",
+              "apps/so-repro/src/assets"
+            ],
+            "styles": ["apps/so-repro/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/so-repro/src/environments/environment.ts",
+                  "with": "apps/so-repro/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "so-repro:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "so-repro:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "so-repro:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/so-repro/tsconfig.app.json",
+              "apps/so-repro/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/so-repro/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/so-repro/jest.config.js",
+            "tsConfig": "apps/so-repro/tsconfig.spec.json",
+            "setupFile": "apps/so-repro/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "so-repro-e2e": {
+      "root": "apps/so-repro-e2e",
+      "sourceRoot": "apps/so-repro-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/so-repro-e2e/cypress.json",
+            "tsConfig": "apps/so-repro-e2e/tsconfig.e2e.json",
+            "devServerTarget": "so-repro:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "so-repro:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/so-repro-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/so-repro-e2e/**"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    }
+  },
+  "defaultProject": "so-repro"
+}
